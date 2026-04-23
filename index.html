@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sinapse Lab — Tecnologia & Saúde Mental</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0e12;
+    --bg2: #12151b;
+    --bg3: #181c25;
+    --border: rgba(255,255,255,0.08);
+    --teal: #1D9E75;
+    --teal-light: #5DCAA5;
+    --teal-dim: #0F6E56;
+    --purple: #7F77DD;
+    --purple-light: #AFA9EC;
+    --text: #eceef2;
+    --text-muted: #8a8f9d;
+    --text-dim: #5a5f6d;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(12,14,18,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--teal-light); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--teal-dim);
+    border-radius: 100px;
+    color: var(--teal-light) !important;
+    font-size: 0.8rem !important;
+    transition: background .2s, color .2s !important;
+  }
+  .nav-cta:hover { background: var(--teal-dim) !important; color: #fff !important; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero canvas {
+    position: absolute; inset: 0; z-index: 0;
+    opacity: 0.35;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    border: 1px solid var(--teal-dim);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    position: relative; z-index: 1;
+    animation: fadeUp .8s ease both;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 760px;
+    position: relative; z-index: 1;
+    animation: fadeUp .8s .1s ease both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--teal-light);
+  }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 520px;
+    font-weight: 300;
+    position: relative; z-index: 1;
+    animation: fadeUp .8s .2s ease both;
+  }
+  .hero-btns {
+    margin-top: 2.5rem;
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    position: relative; z-index: 1;
+    animation: fadeUp .8s .3s ease both;
+  }
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, transform .15s;
+  }
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
+  .btn-ghost {
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    z-index: 1; animation: fadeUp .8s .5s ease both;
+  }
+  .hero-scroll span { font-size: 0.7rem; letter-spacing: .12em; color: var(--text-dim); text-transform: uppercase; }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--teal), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 7rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--teal-light); font-weight: 500; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+  .section-title em { font-style: italic; color: var(--teal-light); }
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* ── SOBRE ── */
+  #sobre { background: var(--bg2); }
+  .sobre-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+  .sobre-text p {
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+  .sobre-text p strong { color: var(--text); font-weight: 500; }
+  .sobre-values {
+    display: flex; flex-direction: column; gap: 1.25rem;
+  }
+  .value-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg3);
+    transition: border-color .2s;
+  }
+  .value-item:hover { border-color: var(--teal-dim); }
+  .value-icon {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: rgba(29,158,117,.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .value-icon svg { width: 18px; height: 18px; stroke: var(--teal-light); fill: none; stroke-width: 1.5; }
+  .value-item h4 { font-size: .95rem; font-weight: 500; margin-bottom: .25rem; }
+  .value-item p { font-size: .875rem; color: var(--text-muted); margin: 0; }
+
+  /* ── SOLUÇÕES ── */
+  #solucoes { background: var(--bg); }
+  .solucoes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .sol-card {
+    padding: 2rem 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg2);
+    transition: border-color .25s, transform .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .sol-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: transparent;
+    transition: background .25s;
+  }
+  .sol-card:hover { border-color: var(--teal-dim); transform: translateY(-3px); }
+  .sol-card:hover::before { background: linear-gradient(90deg, var(--teal), var(--purple)); }
+  .sol-card.featured {
+    border-color: var(--teal-dim);
+    background: linear-gradient(160deg, rgba(29,158,117,.07), var(--bg2));
+  }
+  .sol-card.featured::before { background: linear-gradient(90deg, var(--teal), var(--purple)); }
+  .sol-num {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: rgba(93,202,165,.2);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .sol-card h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: .75rem; }
+  .sol-card p { font-size: .9rem; color: var(--text-muted); font-weight: 300; line-height: 1.65; }
+  .sol-tag {
+    display: inline-block; margin-top: 1.25rem;
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .25rem .75rem; border-radius: 100px;
+    background: rgba(29,158,117,.1); color: var(--teal-light);
+  }
+  .sol-tag.purple { background: rgba(127,119,221,.1); color: var(--purple-light); }
+
+  /* ── ÁREAS ── */
+  #areas { background: var(--bg2); }
+  .areas-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: end; margin-bottom: 3.5rem;
+  }
+  .areas-list {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+  }
+  .area-item {
+    display: flex; align-items: center; gap: .875rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg3);
+    font-size: .9rem;
+    transition: border-color .2s, background .2s;
+  }
+  .area-item:hover { border-color: var(--teal-dim); background: rgba(29,158,117,.04); }
+  .area-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--teal); flex-shrink: 0;
+  }
+  .area-dot.purple { background: var(--purple); }
+
+  /* ── EQUIPE ── */
+  #equipe { background: var(--bg); }
+  .equipe-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2rem; margin-top: 3.5rem;
+  }
+  .member-card {
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--bg2);
+    transition: border-color .25s;
+  }
+  .member-card:hover { border-color: rgba(255,255,255,0.15); }
+  .member-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif);
+    font-size: 1.4rem; font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+  .member-avatar.teal { background: rgba(29,158,117,.15); color: var(--teal-light); }
+  .member-avatar.purple { background: rgba(127,119,221,.15); color: var(--purple-light); }
+  .member-card h3 { font-size: 1.3rem; font-weight: 400; font-family: var(--serif); }
+  .member-role {
+    font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 1rem;
+  }
+  .member-card p { font-size: .9rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
+  .member-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+  .tag {
+    font-size: .72rem; padding: .3rem .75rem; border-radius: 100px;
+    border: 1px solid var(--border); color: var(--text-muted);
+  }
+
+  /* ── CONTATO ── */
+  #contato {
+    background: var(--bg2);
+    text-align: center;
+  }
+  .contato-inner {
+    max-width: 620px; margin: 0 auto;
+    padding: 4rem 3rem;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--bg3);
+    margin-top: 3rem;
+  }
+  .contato-inner p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem; }
+  .contact-items {
+    display: flex; flex-direction: column; gap: .875rem; margin-bottom: 2rem;
+  }
+  .contact-row {
+    display: flex; align-items: center; justify-content: center; gap: .75rem;
+    font-size: .9rem; color: var(--text-muted);
+  }
+  .contact-row a { color: var(--teal-light); text-decoration: none; }
+  .contact-row a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  footer p { font-size: .8rem; color: var(--text-dim); }
+  .footer-logo { font-family: var(--serif); font-size: 1rem; color: var(--text-muted); }
+  .footer-logo span { color: var(--teal-light); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 48px; height: 2px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+    margin: 1.5rem 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: .4; }
+    50% { opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .sobre-grid, .areas-header, .equipe-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .solucoes-grid { grid-template-columns: 1fr; }
+    .areas-list { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: .75rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Sinapse<span>Lab</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#solucoes">Soluções</a></li>
+    <li><a href="#areas">Áreas</a></li>
+    <li><a href="#equipe">Equipe</a></li>
+    <li><a href="#contato" class="nav-cta">Fale conosco</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="neural-canvas"></canvas>
+  <span class="hero-tag">Tecnologia · Saúde · Comportamento Humano</span>
+  <h1 class="hero-title">Onde a <em>mente humana</em> encontra a inteligência tecnológica</h1>
+  <p class="hero-sub">Unimos desenvolvimento de soluções digitais e saúde mental para criar experiências que transformam vidas — dentro e fora das clínicas.</p>
+  <div class="hero-btns">
+    <a href="#solucoes" class="btn-primary">Conheça nossas soluções</a>
+    <a href="#sobre" class="btn-ghost">Sobre a Sinapse Lab</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Rolar</span>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <p class="section-label">Nossa história</p>
+    <h2 class="section-title">A conexão que <em>nos define</em></h2>
+    <div class="sobre-grid">
+      <div class="sobre-text">
+        <p>A <strong>Sinapse Lab</strong> nasceu da união de duas visões: a precisão do desenvolvimento de software e a sensibilidade das ciências do comportamento humano.</p>
+        <p>Assim como uma sinapse conecta neurônios para criar pensamento, conectamos <strong>tecnologia e saúde mental</strong> para criar soluções que realmente importam — para profissionais, instituições e pessoas.</p>
+        <p>Somos uma organização de caráter interdisciplinar, com atuação tanto no desenvolvimento de produtos digitais quanto no cuidado psicológico e psicopedagógico. Acreditamos que os melhores resultados surgem quando <strong>rigor técnico e escuta humana</strong> trabalham juntos.</p>
+        <div class="divider"></div>
+        <p style="color: var(--text-dim); font-size: .875rem; font-style: italic;">— Fundada por Rodrigo & Lais, em Belém do Pará.</p>
+      </div>
+      <div class="sobre-values">
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 0v20M2 12h20"/></svg>
+          </div>
+          <div>
+            <h4>Interdisciplinaridade</h4>
+            <p>Tecnologia e ciências humanas não são opostos — são complementares. Nossa força está na fronteira entre as duas.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.3-6.7-2.1 2.1M8.4 15.6l-2.1 2.1m0-11.4 2.1 2.1m7.1 7.1 2.1 2.1"/></svg>
+          </div>
+          <div>
+            <h4>Ética e privacidade</h4>
+            <p>Dados sensíveis de saúde exigem responsabilidade máxima. Construímos com conformidade LGPD desde o início.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <div>
+            <h4>Impacto real</h4>
+            <p>Cada solução que desenvolvemos tem uma pessoa do outro lado. Criamos com esse peso e essa responsabilidade.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÕES -->
+<section id="solucoes">
+  <div class="container">
+    <p class="section-label">O que fazemos</p>
+    <h2 class="section-title">Soluções pensadas <em>para pessoas</em></h2>
+    <p class="section-sub">Da clínica ao código — desenvolvemos produtos e serviços que conectam profissionais de saúde, organizações e indivíduos a melhores resultados.</p>
+    <div class="solucoes-grid">
+
+      <div class="sol-card featured">
+        <div class="sol-num">01</div>
+        <h3>Plataformas de Saúde Digital</h3>
+        <p>Desenvolvimento de sistemas e aplicações voltados para saúde mental, gestão clínica, triagem psicológica e conformidade regulatória. Construídos com LGPD e as boas práticas do setor.</p>
+        <span class="sol-tag">Desenvolvimento</span>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-num">02</div>
+        <h3>Atendimento Psicológico & Psicopedagógico</h3>
+        <p>Acompanhamento clínico individual com abordagem humanizada, voltado para desenvolvimento cognitivo, aprendizagem, saúde emocional e bem-estar ao longo da vida.</p>
+        <span class="sol-tag purple">Clínica</span>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-num">03</div>
+        <h3>Consultoria em Saúde Corporativa</h3>
+        <p>Apoio a empresas na gestão de riscos psicossociais, adequação à NR-1, programas de saúde mental organizacional e desenvolvimento de ambientes de trabalho mais saudáveis.</p>
+        <span class="sol-tag">Consultoria</span>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-num">04</div>
+        <h3>Inteligência Artificial Aplicada à Saúde</h3>
+        <p>Pesquisa e desenvolvimento de soluções com machine learning, XAI e análise de dados para apoio a decisões clínicas, triagens e produção de insights responsáveis na área da saúde.</p>
+        <span class="sol-tag">IA & Dados</span>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-num">05</div>
+        <h3>Avaliação & Diagnóstico Psicopedagógico</h3>
+        <p>Processos de avaliação especializada para identificar barreiras de aprendizagem, perfis cognitivos e necessidades educacionais, com laudos e encaminhamentos assertivos.</p>
+        <span class="sol-tag purple">Clínica</span>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-num">06</div>
+        <h3>Produtos Digitais Sob Medida</h3>
+        <p>Para organizações fora da saúde que precisam de soluções web robustas, bem arquitetadas e mantidas por um time que entende do negócio e das pessoas por trás dele.</p>
+        <span class="sol-tag">Desenvolvimento</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ÁREAS DE ATUAÇÃO -->
+<section id="areas">
+  <div class="container">
+    <div class="areas-header">
+      <div>
+        <p class="section-label">Áreas de atuação</p>
+        <h2 class="section-title">Uma atuação tão <em>ampla</em> quanto a necessidade humana</h2>
+      </div>
+      <p class="section-sub" style="align-self: end;">Nosso campo de trabalho é amplo por design — acreditamos que saúde, tecnologia e aprendizagem são partes de um mesmo sistema.</p>
+    </div>
+    <div class="areas-list">
+      <div class="area-item"><div class="area-dot purple"></div>Saúde Mental & Bem-Estar</div>
+      <div class="area-item"><div class="area-dot"></div>Desenvolvimento de Software em Saúde</div>
+      <div class="area-item"><div class="area-dot purple"></div>Psicopedagogia Clínica</div>
+      <div class="area-item"><div class="area-dot"></div>Inteligência Artificial Responsável</div>
+      <div class="area-item"><div class="area-dot purple"></div>Neuropsicologia & Cognição</div>
+      <div class="area-item"><div class="area-dot"></div>Conformidade Regulatória (NR-1, LGPD)</div>
+      <div class="area-item"><div class="area-dot purple"></div>Saúde Organizacional</div>
+      <div class="area-item"><div class="area-dot"></div>Ciência de Dados & Analytics</div>
+      <div class="area-item"><div class="area-dot purple"></div>Psicologia do Desenvolvimento</div>
+      <div class="area-item"><div class="area-dot"></div>Sistemas Web & Plataformas Digitais</div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section id="equipe">
+  <div class="container">
+    <p class="section-label">Quem somos</p>
+    <h2 class="section-title">As pessoas por <em>trás</em> da sinapse</h2>
+    <div class="equipe-grid">
+
+      <div class="member-card">
+        <div class="member-avatar teal">R</div>
+        <h3>Rodrigo</h3>
+        <p class="member-role">Co-fundador · Engenharia & Dados</p>
+        <p>Desenvolvedor de software e mestrando em Ciência da Computação, com foco em Inteligência Computacional, aprendizado de máquina e XAI. Transita com naturalidade entre o código e o produto, sempre com olhar voltado ao impacto real das soluções que desenvolve.</p>
+        <div class="member-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">IA & XAI</span>
+          <span class="tag">LGPD / NR-1</span>
+          <span class="tag">Ciência de Dados</span>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar purple">L</div>
+        <h3>Lais</h3>
+        <p class="member-role">Co-fundadora · Psicologia & Psicopedagogia</p>
+        <p>Psicopedagoga e formanda em Psicologia, com atuação clínica em avaliação e intervenção em aprendizagem, desenvolvimento infantil e saúde emocional. Traz ao trabalho a escuta apurada e o rigor científico necessários para cuidar de quem mais precisa.</p>
+        <div class="member-tags">
+          <span class="tag">Psicopedagogia</span>
+          <span class="tag">Psicologia Clínica</span>
+          <span class="tag">Avaliação Cognitiva</span>
+          <span class="tag">Saúde Mental</span>
+          <span class="tag">NR-1</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+    <p class="section-label">Contato</p>
+    <h2 class="section-title">Vamos criar algo <em>juntos?</em></h2>
+    <div class="contato-inner">
+      <p>Seja para desenvolver uma solução digital, iniciar um acompanhamento clínico ou explorar uma parceria, estamos aqui para ouvir.</p>
+      <div class="contact-items">
+        <div class="contact-row">
+          <span>✉</span>
+          <a href="mailto:contato@sinapselab.com.br">contato@sinapselab.com.br</a>
+        </div>
+        <div class="contact-row">
+          <span>📍</span>
+          <span>Belém, Pará — Brasil</span>
+        </div>
+      </div>
+      <a href="mailto:contato@sinapselab.com.br" class="btn-primary">Enviar mensagem</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Sinapse<span>Lab</span></span>
+  <p>© 2025 Sinapse Lab · Tecnologia & Saúde Mental · Belém, PA</p>
+  <p style="font-size:.75rem; color: var(--text-dim);">Feito com intenção.</p>
+</footer>
+
+<!-- NEURAL CANVAS -->
+<script>
+(function(){
+  const canvas = document.getElementById('neural-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], animId;
+  const NODE_COUNT = 55;
+  const MAX_DIST = 160;
+  const TEAL = '93,202,165';
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function init(){
+    nodes = [];
+    for(let i=0;i<NODE_COUNT;i++){
+      nodes.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        vx: (Math.random()-.5)*.35,
+        vy: (Math.random()-.5)*.35,
+        r: Math.random()*2+1
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<nodes.length;i++){
+      const a = nodes[i];
+      for(let j=i+1;j<nodes.length;j++){
+        const b = nodes[j];
+        const d = Math.hypot(a.x-b.x, a.y-b.y);
+        if(d<MAX_DIST){
+          const alpha = (1-d/MAX_DIST)*.5;
+          ctx.strokeStyle = `rgba(${TEAL},${alpha})`;
+          ctx.lineWidth = .6;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(${TEAL},.7)`;
+      ctx.fill();
+      n.x += n.vx; n.y += n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    animId = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', ()=>{ resize(); init(); });
+  resize(); init(); draw();
+})();
+</script>
+
+</body>
+</html>
